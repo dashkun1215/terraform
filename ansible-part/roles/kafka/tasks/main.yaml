@@ -1,0 +1,27 @@
+---
+#
+# Installing Kafka
+#
+-
+- name: Create kafka user and data folders
+  shell: |
+    useradd kafka
+    mkdir -p /data/kafka
+    mkdir -p /data/zookeeper
+    chown -R kafka:kafka /data/kafka*
+    chown -R kafka:kafka /data/zookeeper*
+
+- name: Copy binary to /opt
+  ansible.builtin.copy:
+    src: kafka.tgz
+    dest: /opt
+    owner: kafka
+    group: kafka
+
+- name: Extract binary
+  ansible.builtin.unarchive:
+    src: /opt/kafka.tgz
+    dest: /opt
+    owner: kafka
+    group: kafka
+    remote_src: yes
