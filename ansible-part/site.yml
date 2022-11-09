@@ -1,0 +1,46 @@
+---
+- hosts: all
+  remote_user: sparrow
+  become: yes
+  become_user: root
+  roles:
+  - { role: java }
+  - { role: elasticsearch }
+  - { role: kafka }
+
+
+- name:
+  hosts: master
+  remote_user: sparrow
+  become: yes
+  become_user: root
+  roles:
+  - { role: kibana }
+  tasks:
+   - name: config 1
+     shell: |
+      echo "1" > /data/zookeeper/myid
+      sed -i 's/#node.name: node-1/node.name: master-1/g' /etc/elasticsearch/elasticsearch.yml
+       
+
+- name:
+  hosts: node-1
+  remote_user: sparrow
+  become: yes
+  become_user: root
+  tasks:
+   - name: config 2
+     shell: |
+      echo "2" > /data/zookeeper/myid
+      sed -i 's/#node.name: node-1/node.name: node-1/g' /etc/elasticsearch/elasticsearch.yml
+
+- name:
+  hosts: node-2
+  remote_user: sparrow
+  become: yes
+  become_user: root
+  tasks:
+   - name: config 3
+     shell: |
+      echo "3" > /data/zookeeper/myid
+      sed -i 's/#node.name: node-1/node.name: node-2/g' /etc/elasticsearch/elasticsearch.yml

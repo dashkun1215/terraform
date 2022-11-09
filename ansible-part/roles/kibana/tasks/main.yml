@@ -1,0 +1,33 @@
+---
+#
+# Installing Kibana
+#
+
+# Install Kibana 
+
+- name: Install Kibana with apt
+  apt:
+   name: kibana
+   update_cache: yes
+ 
+# Configurations
+
+- name: Updating the config file to allow outside access
+  lineinfile:
+   destfile: /etc/kibana/kibana.yml
+   regexp: '#server.host: "localhost"'
+   line: 'server.host: "10.0.2.6"'
+
+- name: Defining server port
+  lineinfile:
+   destfile: /etc/kibana/kibana.yml
+   regexp: 'server.port:'
+   line: 'server.port: 5601'
+
+   
+# Starting Kibana
+
+- name: Starting Kibana
+  service:
+   name: kibana
+   state: started
