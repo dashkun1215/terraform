@@ -1,0 +1,36 @@
+---
+#
+# Installing k8s
+#
+
+# Add apt key
+
+- name: Add Elasticsearch apt key
+  apt_key:
+   url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+   state: present
+
+# Add the k8s apt repo.
+
+- name: Adding Elasticsearch repo
+  apt_repository:
+   repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+   state: present
+
+# Installing k8s
+
+- name: Install Elasticsearch
+  apt:
+   name: kubeadm
+   update_cache: yes
+
+- name: Install Elasticsearch
+  apt:
+    name: kubectl
+    update_cache: yes
+
+- name: Install Elasticsearch
+  apt:
+   name: kubelet
+   update_cache: yes
+
